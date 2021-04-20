@@ -17,7 +17,7 @@ CREATE TABLE Container(
     amount_bills   SMALLINT,
     to_country     VARCHAR(70) NOT NULL,
     create_date    DATE NOT NULL,
-    close_date     DATE NOT NULL,
+    close_date     DATE,
     status         BOOLEAN,
     curr_value     DECIMAL(6,2) NOT NULL,
     curr_weight    SMALLINT NOT NULL,

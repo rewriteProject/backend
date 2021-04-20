@@ -1,0 +1,27 @@
+DROP DATABASE IF EXISTS user_analytics;
+CREATE DATABASE user_analytics;
+USE user_analytics;
+
+CREATE TABLE User(
+    id_user  INTEGER NOT NULL,
+    name     VARCHAR(50),
+    email    VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id_user)
+)ENGINE=INNODB;
+
+CREATE TABLE Analytics(
+	id_user INTEGER NOT NULL,
+    id_result INTEGER NOT NULL,
+    type_analytics VARCHAR(5),
+    result JSON,
+    PRIMARY KEY (id_result),
+    FOREIGN KEY (id_user) REFERENCES User(id_user)
+    ON UPDATE CASCADE
+)ENGINE=INNODB;
+
+INSERT INTO User(id_user, name, email, password) VALUES (1, 'TestUser', 'example@mail.com', 'abc1');
+INSERT INTO Analytics(id_user, id_result, type_analytics, result) VALUES (1, 1, 'I1', '{"key1": "value1", "key2": "value2"}');
+
+SELECT * FROM User;
+SELECT * FROM Analytics;
