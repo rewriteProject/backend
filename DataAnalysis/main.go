@@ -29,14 +29,31 @@ func handleIncomingRequests() {
 	// Dies erlaubt dem Programm den Pfad der Route zu sehen
 	router := mux.NewRouter().StrictSlash(true)
 	// Der Standardpfad ruft die func helloWorld auf
-	router.HandleFunc("/", helloWorld).Methods("GET")
+	//router.HandleFunc("/", helloWorld).Methods("GET")
+
+	// Pfade für alle Infos aus Datenbank
+	router.HandleFunc("/customer", AllCustomers).Methods("GET")
+	router.HandleFunc("/container", AllContainers).Methods("GET")
+	router.HandleFunc("/bill", AllBills).Methods("GET")
+	router.HandleFunc("/product", AllProducts).Methods("GET")
+
+	// Pfade für das Beziehen von Informationen beim Laden der Website
+	router.HandleFunc("/onLoad/countries", DestinationCountries).Methods("GET")
+	router.HandleFunc("/onLoad/properties", ProductProperties).Methods("GET")
+
+	// Pfade für Auswahl an Infos (Analyse)
+	// POST, da Parameter mitgegeben werden
+
+	///analytics/information/{Case}/{countries}
+	router.HandleFunc("/analytics/information/{Case}/{countries}", InformationHandler).Methods("POST")
+	router.HandleFunc("/analytics/statistics/{country}/{attributes}", StatisticHandler).Methods("POST")
+	router.HandleFunc("/analytics/forecast/{Case}/{country}", ForecastHandler).Methods("POST")
 
 	// Startet einen HttpServer mit Adresse und Handler bzw Router
 	log.Fatal(http.ListenAndServe(":8081", router))
 }
 
 func main() {
-	fmt.Println("Starting ORM...")
-
+	fmt.Println("REST gestartet")
 	handleIncomingRequests()
 }
