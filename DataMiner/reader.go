@@ -14,7 +14,7 @@ import (
 )
 
 // Verzeichnis in dem sich CSV-Dateien befinden
-var observedDir = "C:/Users/chris/OneDrive/Dokumente/Diplomarbeit/ReWriteGo/csv-files"
+var observedDir = "./csv-files"
 
 // Slices für INSERTs
 var sliceCustomers []string
