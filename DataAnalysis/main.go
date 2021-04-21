@@ -50,7 +50,7 @@ func handleIncomingRequests() {
 	router.HandleFunc("/analytics/forecast/{Case}/{country}", ForecastHandler).Methods("POST")
 
 	// Startet einen HttpServer mit Adresse und Handler bzw Router
-	log.Fatal(http.ListenAndServe(":8081", router))
+	log.Fatal(http.ListenAndServe(":9003", router))
 }
 
 func main() {
