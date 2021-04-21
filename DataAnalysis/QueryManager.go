@@ -14,10 +14,10 @@ import (
 )
 
 // Setting environment variables
-var databaseUser string := os.Getenv("DATABASE_USER")
-var databasePassword string := os.Getenv("DATABASE_PASSWORD")
-var databasePort string := os.Getenv("DATABASE_PORT")
-var databaseHost string := os.Getenv("DATABASE_HOST")
+var databaseUser string = os.Getenv("DATABASE_USER")
+var databasePassword string = os.Getenv("DATABASE_PASSWORD")
+var databasePort string = os.Getenv("DATABASE_PORT")
+var databaseHost string = os.Getenv("DATABASE_HOST")
 
 // Struct für Table Customer
 type Customer struct {

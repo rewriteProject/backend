@@ -9,7 +9,7 @@ import (
 )
 
 // Setting environment variable for server
-var port string := os.Getenv("PORT")
+var port string = os.Getenv("PORT")
 
 /*
 * Benutzt Mux um einen HttpRouter zu erstellen, der Anfragen mit einer Liste von verfügbaren Routen vergleicht

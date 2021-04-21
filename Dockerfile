@@ -2,7 +2,7 @@ FROM golang:alpine
 
 WORKDIR /build
 
-COPY ./DataAnalysisgo/go.mod .
+COPY ./DataAnalysis/go.mod .
 
 RUN go mod download
 
