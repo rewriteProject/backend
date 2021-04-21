@@ -84,13 +84,13 @@ func checkForDoubleElement(list []string, s string) bool {
 // Gibt Zielländer der Container-Tabelle aus
 func DestinationCountries(w http.ResponseWriter, r *http.Request) {
 
-	dbConn, error := sql.Open("mysql", "root:wasd123@tcp(127.0.0.1:3306)/logistics")
+	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
 	defer dbConn.Close()
 
-	results, error := dbConn.Query("Select to_country from container")
+	results, error := dbConn.Query("Select to_country from Container")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -118,13 +118,13 @@ func DestinationCountries(w http.ResponseWriter, r *http.Request) {
 // Gibt Marke, Farbe und Kategory der Produkt-Tabelle aus
 func ProductProperties(w http.ResponseWriter, r *http.Request) {
 	//
-	dbConn, error := sql.Open("mysql", "root:wasd123@tcp(127.0.0.1:3306)/logistics")
+	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
 	defer dbConn.Close()
 
-	results, error := dbConn.Query("Select color, brand, category from product")
+	results, error := dbConn.Query("Select color, brand, category from Product")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -168,7 +168,7 @@ func ProductProperties(w http.ResponseWriter, r *http.Request) {
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 // Information
 func InformationHandler(w http.ResponseWriter, r *http.Request) {
-	dbConn, error := sql.Open("mysql", "root:wasd123@tcp(127.0.0.1:3306)/logistics")
+	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -183,7 +183,7 @@ func InformationHandler(w http.ResponseWriter, r *http.Request) {
 	// Fallunterscheidung; Jeweils passendes Prepared Statement wird mit Parameter aufgerufen
 	// Fall Information I1
 	if Case == "i1" {
-		results, error := dbConn.Query("select id_container, to_country, create_date from container where status='1'")
+		results, error := dbConn.Query("select id_container, to_country, create_date from Container where status='1'")
 		if error != nil {
 			panic(error.Error())
 		}
@@ -233,7 +233,7 @@ func InformationHandler(w http.ResponseWriter, r *http.Request) {
 
 		// Fall Information I2
 	} else if Case == "i2" {
-		results, error := dbConn.Query("select id_container, to_country, curr_weight, max_weight from container where status='1'")
+		results, error := dbConn.Query("select id_container, to_country, curr_weight, max_weight from Container where status='1'")
 		if error != nil {
 			panic(error.Error())
 		}
@@ -288,11 +288,11 @@ func InformationHandler(w http.ResponseWriter, r *http.Request) {
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 // Statistik
 func StatisticHandler(w http.ResponseWriter, r *http.Request) {
-	dbConn, error := sql.Open("mysql", "root:wasd123@tcp(127.0.0.1:3306)/logistics")
-	if error != nil {
-		panic(error.Error())
-	}
-	defer dbConn.Close()
+	//dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
+	//if error != nil {
+	//	panic(error.Error())
+	//}
+	//defer dbConn.Close()
 
 	// Abrufen der Pfad Parameter
 	parameters := mux.Vars(r)
@@ -380,7 +380,7 @@ type P2 struct {
 
 // Prognose
 func ForecastHandler(w http.ResponseWriter, r *http.Request) {
-	dbConn, error := sql.Open("mysql", "root:wasd123@tcp(127.0.0.1:3306)/logistics")
+	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -399,7 +399,7 @@ func ForecastHandler(w http.ResponseWriter, r *http.Request) {
 	// Fall Prognose P1-1
 	if Case == "p1-1" {
 		//Schickt die Query an die Datenbank
-		query := "select to_country, create_date, close_date from container where status='0' and to_country='" + country + "' and create_date>='" + minDate[0] + "'"
+		query := "select to_country, create_date, close_date from Container where status='0' and to_country='" + country + "' and create_date>='" + minDate[0] + "'"
 		results, error := dbConn.Query(query)
 		if error != nil {
 			panic(error.Error())
@@ -432,7 +432,7 @@ func ForecastHandler(w http.ResponseWriter, r *http.Request) {
 
 	} else if Case == "p1-2" {
 		//Schickt die Query an die Datenbank
-		query := "select to_country, create_date from container where status='1' and to_country='" + country + "'"
+		query := "select to_country, create_date from Container where status='1' and to_country='" + country + "'"
 		fmt.Println(query)
 		results, error := dbConn.Query(query)
 		if error != nil {
@@ -581,14 +581,14 @@ func ForecastHandler(w http.ResponseWriter, r *http.Request) {
 // Fragt alle Informationen des Table Customer ab
 func AllCustomers(w http.ResponseWriter, r *http.Request) {
 	// Baut Verbindung zu Datenbank auf
-	dbConn, error := sql.Open("mysql", "root:wasd123@tcp(127.0.0.1:3306)/logistics")
+	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
 	defer dbConn.Close()
 
 	//Schickt die Query an die Datenbank
-	results, error := dbConn.Query("Select * from customer")
+	results, error := dbConn.Query("Select * from Customer")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -618,13 +618,13 @@ func AllCustomers(w http.ResponseWriter, r *http.Request) {
 
 // Fragt alle Informationen des Table Container ab
 func AllContainers(w http.ResponseWriter, r *http.Request) {
-	dbConn, error := sql.Open("mysql", "root:wasd123@tcp(127.0.0.1:3306)/logistics")
+	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
 	defer dbConn.Close()
 
-	results, error := dbConn.Query("Select to_country from container")
+	results, error := dbConn.Query("Select to_country from Container")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -660,13 +660,13 @@ func AllContainers(w http.ResponseWriter, r *http.Request) {
 
 // Fragt alle Informationen des Table Bill ab
 func AllBills(w http.ResponseWriter, r *http.Request) {
-	dbConn, error := sql.Open("mysql", "root:wasd123@tcp(127.0.0.1:3306)/logistics")
+	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
 	defer dbConn.Close()
 
-	results, error := dbConn.Query("Select * from bill")
+	results, error := dbConn.Query("Select * from Bill")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -699,13 +699,13 @@ func AllBills(w http.ResponseWriter, r *http.Request) {
 // Fragt alle Informationen des Table Product ab
 func AllProducts(w http.ResponseWriter, r *http.Request) {
 
-	dbConn, error := sql.Open("mysql", "root:wasd123@tcp(127.0.0.1:3306)/logistics")
+	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
 	defer dbConn.Close()
 
-	results, error := dbConn.Query("Select * from product")
+	results, error := dbConn.Query("Select * from Product")
 	if error != nil {
 		panic(error.Error())
 	}
