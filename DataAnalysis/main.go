@@ -5,7 +5,11 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"os"
 )
+
+// Setting environment variable for server
+var port string := os.Getenv("PORT")
 
 /*
 * Benutzt Mux um einen HttpRouter zu erstellen, der Anfragen mit einer Liste von verfügbaren Routen vergleicht
@@ -50,7 +54,7 @@ func handleIncomingRequests() {
 	router.HandleFunc("/analytics/forecast/{Case}/{country}", ForecastHandler).Methods("POST")
 
 	// Startet einen HttpServer mit Adresse und Handler bzw Router
-	log.Fatal(http.ListenAndServe(":9003", router))
+	log.Fatal(http.ListenAndServe(":" + port, router))
 }
 
 func main() {

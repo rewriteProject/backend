@@ -10,7 +10,14 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"os"
 )
+
+// Setting environment variables
+var databaseUser string := os.Getenv("DATABASE_USER")
+var databasePassword string := os.Getenv("DATABASE_PASSWORD")
+var databasePort string := os.Getenv("DATABASE_PORT")
+var databaseHost string := os.Getenv("DATABASE_HOST")
 
 // Struct für Table Customer
 type Customer struct {
@@ -84,7 +91,7 @@ func checkForDoubleElement(list []string, s string) bool {
 // Gibt Zielländer der Container-Tabelle aus
 func DestinationCountries(w http.ResponseWriter, r *http.Request) {
 
-	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
+	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -118,7 +125,7 @@ func DestinationCountries(w http.ResponseWriter, r *http.Request) {
 // Gibt Marke, Farbe und Kategory der Produkt-Tabelle aus
 func ProductProperties(w http.ResponseWriter, r *http.Request) {
 	//
-	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
+	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -168,7 +175,7 @@ func ProductProperties(w http.ResponseWriter, r *http.Request) {
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 // Information
 func InformationHandler(w http.ResponseWriter, r *http.Request) {
-	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
+	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -288,7 +295,7 @@ func InformationHandler(w http.ResponseWriter, r *http.Request) {
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 // Statistik
 func StatisticHandler(w http.ResponseWriter, r *http.Request) {
-	//dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
+	//dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
 	//if error != nil {
 	//	panic(error.Error())
 	//}
@@ -380,7 +387,7 @@ type P2 struct {
 
 // Prognose
 func ForecastHandler(w http.ResponseWriter, r *http.Request) {
-	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
+	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -581,7 +588,7 @@ func ForecastHandler(w http.ResponseWriter, r *http.Request) {
 // Fragt alle Informationen des Table Customer ab
 func AllCustomers(w http.ResponseWriter, r *http.Request) {
 	// Baut Verbindung zu Datenbank auf
-	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
+	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -618,7 +625,7 @@ func AllCustomers(w http.ResponseWriter, r *http.Request) {
 
 // Fragt alle Informationen des Table Container ab
 func AllContainers(w http.ResponseWriter, r *http.Request) {
-	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
+	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -660,7 +667,7 @@ func AllContainers(w http.ResponseWriter, r *http.Request) {
 
 // Fragt alle Informationen des Table Bill ab
 func AllBills(w http.ResponseWriter, r *http.Request) {
-	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
+	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -699,7 +706,7 @@ func AllBills(w http.ResponseWriter, r *http.Request) {
 // Fragt alle Informationen des Table Product ab
 func AllProducts(w http.ResponseWriter, r *http.Request) {
 
-	dbConn, error := sql.Open("mysql", "root:7BHipTjov1k5S8LiefJs9@tcp(134.209.253.114:3306)/logistics")
+	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
