@@ -8,9 +8,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"net/http"
-	"strconv"
-	"strings"
 	"os"
+	//"strconv"
+	"strings"
 )
 
 // Setting environment variables
@@ -91,31 +91,32 @@ func checkForDoubleElement(list []string, s string) bool {
 // Gibt Zielländer der Container-Tabelle aus
 func DestinationCountries(w http.ResponseWriter, r *http.Request) {
 
-	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
-	if error != nil {
-		panic(error.Error())
-	}
-	defer dbConn.Close()
+	//dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
+	//if error != nil {
+	//	panic(error.Error())
+	//}
+	//defer dbConn.Close()
+	//
+	//results, error := dbConn.Query("Select to_country from Container")
+	//if error != nil {
+	//	panic(error.Error())
+	//}
+	//defer results.Close()
 
-	results, error := dbConn.Query("Select to_country from Container")
-	if error != nil {
-		panic(error.Error())
-	}
-	defer results.Close()
+	//countries := make([]string, 0)
+	countries := []string{"China", "Russia", "USA"}
 
-	countries := make([]string, 0)
-
-	for results.Next() {
-		var container Container
-		error = results.Scan(&container.to_country)
-		if error != nil {
-			panic(error.Error())
-		}
-
-		if checkForDoubleElement(countries, container.to_country) == false {
-			countries = append(countries, container.to_country)
-		}
-	}
+	//for results.Next() {
+	//	var container Container
+	//	error = results.Scan(&container.to_country)
+	//	if error != nil {
+	//		panic(error.Error())
+	//	}
+	//
+	//	if checkForDoubleElement(countries, container.to_country) == false {
+	//		countries = append(countries, container.to_country)
+	//	}
+	//}
 	jsonMap := map[string]interface{}{
 		"countries": countries}
 	json.NewEncoder(w).Encode(jsonMap)
@@ -125,44 +126,47 @@ func DestinationCountries(w http.ResponseWriter, r *http.Request) {
 // Gibt Marke, Farbe und Kategory der Produkt-Tabelle aus
 func ProductProperties(w http.ResponseWriter, r *http.Request) {
 	//
-	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
-	if error != nil {
-		panic(error.Error())
-	}
-	defer dbConn.Close()
-
-	results, error := dbConn.Query("Select color, brand, category from Product")
-	if error != nil {
-		panic(error.Error())
-	}
-	defer results.Close()
+	//dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
+	//if error != nil {
+	//	panic(error.Error())
+	//}
+	//defer dbConn.Close()
+	//
+	//results, error := dbConn.Query("Select color, brand, category from Product")
+	//if error != nil {
+	//	panic(error.Error())
+	//}
+	//defer results.Close()
 
 	// Slices, um Einträge der DB-Columns aufzuteilen
-	color := make([]string, 0)
-	brand := make([]string, 0)
-	cat := make([]string, 0)
+	//color := make([]string, 0)
+	//brand := make([]string, 0)
+	//cat := make([]string, 0)
+	color := []string{"Green", "Red", "Blue"}
+	brand := []string{"Nike", "Adidas", "Puma"}
+	cat := []string{"Tshirt", "Pants", "Shoes"}
 
-	for results.Next() {
-		var product Product
-		error = results.Scan(&product.color, &product.brand, &product.category)
-		if error != nil {
-			panic(error.Error())
-		}
-
-		// Doppelte Einträge in Slices filtern
-		if checkForDoubleElement(color, product.color) == false {
-			color = append(color, product.color)
-		}
-
-		if checkForDoubleElement(brand, product.brand) == false {
-			brand = append(brand, product.brand)
-		}
-
-		if checkForDoubleElement(cat, product.category) == false {
-			cat = append(cat, product.category)
-		}
-
-	}
+	//for results.Next() {
+	//	var product Product
+	//	error = results.Scan(&product.color, &product.brand, &product.category)
+	//	if error != nil {
+	//		panic(error.Error())
+	//	}
+	//
+	//	// Doppelte Einträge in Slices filtern
+	//	if checkForDoubleElement(color, product.color) == false {
+	//		color = append(color, product.color)
+	//	}
+	//
+	//	if checkForDoubleElement(brand, product.brand) == false {
+	//		brand = append(brand, product.brand)
+	//	}
+	//
+	//	if checkForDoubleElement(cat, product.category) == false {
+	//		cat = append(cat, product.category)
+	//	}
+	//
+	//}
 	jsonMap := map[string]interface{}{
 		"color":    color,
 		"brand":    brand,
@@ -175,117 +179,157 @@ func ProductProperties(w http.ResponseWriter, r *http.Request) {
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 // Information
 func InformationHandler(w http.ResponseWriter, r *http.Request) {
-	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
-	if error != nil {
-		panic(error.Error())
-	}
-	defer dbConn.Close()
+	//dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
+	//if error != nil {
+	//	panic(error.Error())
+	//}
+	//defer dbConn.Close()
 
 	// Abrufen der Pfad Parameter
 	parameters := mux.Vars(r)
 	Case := parameters["Case"]
 	countries := parameters["countries"]
-	countries_list := strings.Split(countries, ",")
+	//countries_list := strings.Split(countries, ",")
 
 	// Fallunterscheidung; Jeweils passendes Prepared Statement wird mit Parameter aufgerufen
 	// Fall Information I1
 	if Case == "i1" {
-		results, error := dbConn.Query("select id_container, to_country, create_date from Container where status='1'")
-		if error != nil {
-			panic(error.Error())
-		}
-		defer results.Close()
+		//results, error := dbConn.Query("select id_container, to_country, create_date from Container where status='1'")
+		//if error != nil {
+		//	panic(error.Error())
+		//}
+		//defer results.Close()
 
 		//Gabs Package für erweitere json Strukturen
 		nestedjson := gabs.New()
 		_, _ = nestedjson.Set("OPEN", "container", "status")
 
 		if countries == "all" {
-			for results.Next() {
-				var container Container
-				error = results.Scan(&container.id_container, &container.to_country, &container.create_date)
-				if error != nil {
-					panic(error.Error())
-				}
+			//for results.Next() {
+			//	var container Container
+			//	error = results.Scan(&container.id_container, &container.to_country, &container.create_date)
+			//	if error != nil {
+			//		panic(error.Error())
+			//	}
+			//jsonMap := map[string]interface{}{
+			//	"container_id": 1,
+			//	"open_date": "2021-01-30"}
+			//_, _ = nestedjson.SetP(jsonMap, "container.country."+container.to_country)
 
-				jsonMap := map[string]interface{}{
-					"container_id": container.id_container,
-					"open_date":    container.create_date}
-				_, _ = nestedjson.SetP(jsonMap, "container.country."+container.to_country)
-			}
+			jsonMap1 := map[string]interface{}{
+				"container_id": 1,
+				"open_date":    "2021-01-30"}
+			_, _ = nestedjson.SetP(jsonMap1, "container.country.china")
+
+			jsonMap2 := map[string]interface{}{
+				"container_id": 2,
+				"open_date":    "2021-01-24"}
+			_, _ = nestedjson.SetP(jsonMap2, "container.country.russia")
+
+			jsonMap3 := map[string]interface{}{
+				"container_id": 3,
+				"open_date":    "2021-01-19"}
+			_, _ = nestedjson.SetP(jsonMap3, "container.country.usa")
+			//}
 
 			json.NewEncoder(w).Encode(nestedjson)
 
 		} else {
-			for results.Next() {
-				var container Container
-				error = results.Scan(&container.id_container, &container.to_country, &container.create_date)
-				if error != nil {
-					panic(error.Error())
-				}
+			//for results.Next() {
+			//	var container Container
+			//	error = results.Scan(&container.id_container, &container.to_country, &container.create_date)
+			//	if error != nil {
+			//		panic(error.Error())
+			//	}
 
-				// Nur falls das angegebene Land in der Selektion vorkommt, wird es hinzugefügt
-				for _, country := range countries_list {
-					if country == container.to_country {
-						jsonMap := map[string]interface{}{
-							"container_id": container.id_container,
-							"open_date":    container.create_date}
-						_, _ = nestedjson.SetP(jsonMap, "container.country."+container.to_country)
-					}
-				}
-			}
+			// Nur falls das angegebene Land in der Selektion vorkommt, wird es hinzugefügt
+			//for _, country := range countries_list {
+			//	if country == container.to_country {
+			//		jsonMap := map[string]interface{}{
+			//			"container_id": container.id_container,
+			//			"open_date":    container.create_date}
+			//		_, _ = nestedjson.SetP(jsonMap, "container.country."+container.to_country)
+			//	}
+			//}
+			//}
+			jsonMap1 := map[string]interface{}{
+				"container_id": 1,
+				"open_date":    "2021-01-30"}
+			_, _ = nestedjson.SetP(jsonMap1, "container.country."+countries)
 
 			json.NewEncoder(w).Encode(nestedjson)
 		}
 
 		// Fall Information I2
 	} else if Case == "i2" {
-		results, error := dbConn.Query("select id_container, to_country, curr_weight, max_weight from Container where status='1'")
-		if error != nil {
-			panic(error.Error())
-		}
-		defer results.Close()
+		//results, error := dbConn.Query("select id_container, to_country, curr_weight, max_weight from Container where status='1'")
+		//if error != nil {
+		//	panic(error.Error())
+		//}
+		//defer results.Close()
 
 		//Gabs Package für erweitere json Strukturen
 		nestedjson := gabs.New()
 		_, _ = nestedjson.Set("OPEN", "container", "status")
 
 		if countries == "all" {
-			for results.Next() {
-				var container Container
-				error = results.Scan(&container.id_container, &container.to_country, &container.curr_weight, &container.max_weight)
-				if error != nil {
-					panic(error.Error())
-				}
+			//for results.Next() {
+			//	var container Container
+			//	error = results.Scan(&container.id_container, &container.to_country, &container.curr_weight, &container.max_weight)
+			//	if error != nil {
+			//		panic(error.Error())
+			//	}
 
-				jsonMap := map[string]interface{}{
-					"container_id":   container.id_container,
-					"curr_weight_kg": container.curr_weight,
-					"max_weight_kg":  container.max_weight}
-				_, _ = nestedjson.SetP(jsonMap, "container.country."+container.to_country)
-			}
+			//jsonMap := map[string]interface{}{
+			//	"container_id":   container.id_container,
+			//	"curr_weight_kg": container.curr_weight,
+			//	"max_weight_kg":  container.max_weight}
+			//_, _ = nestedjson.SetP(jsonMap, "container.country."+container.to_country)
+			//}
+			jsonMap1 := map[string]interface{}{
+				"container_id":   1,
+				"curr_weight_kg": 22,
+				"max_weight_kg":  25}
+			_, _ = nestedjson.SetP(jsonMap1, "container.country.china")
+
+			jsonMap2 := map[string]interface{}{
+				"container_id":   2,
+				"curr_weight_kg": 8,
+				"max_weight_kg":  25}
+			_, _ = nestedjson.SetP(jsonMap2, "container.country.russia")
+
+			jsonMap3 := map[string]interface{}{
+				"container_id":   3,
+				"curr_weight_kg": 15,
+				"max_weight_kg":  25}
+			_, _ = nestedjson.SetP(jsonMap3, "container.country.usa")
 
 			json.NewEncoder(w).Encode(nestedjson)
 
 		} else {
-			for results.Next() {
-				var container Container
-				error = results.Scan(&container.id_container, &container.to_country, &container.curr_weight, &container.max_weight)
-				if error != nil {
-					panic(error.Error())
-				}
-
-				// Nur falls das angegebene Land in der Selektion vorkommt, wird es hinzugefügt
-				for _, country := range countries_list {
-					if country == container.to_country {
-						jsonMap := map[string]interface{}{
-							"container_id":   container.id_container,
-							"curr_weight_kg": container.curr_weight,
-							"max_weight_kg":  container.max_weight}
-						_, _ = nestedjson.SetP(jsonMap, "container.country."+container.to_country)
-					}
-				}
-			}
+			//for results.Next() {
+			//	var container Container
+			//	error = results.Scan(&container.id_container, &container.to_country, &container.curr_weight, &container.max_weight)
+			//	if error != nil {
+			//		panic(error.Error())
+			//	}
+			//
+			//	// Nur falls das angegebene Land in der Selektion vorkommt, wird es hinzugefügt
+			//	for _, country := range countries_list {
+			//		if country == container.to_country {
+			//			jsonMap := map[string]interface{}{
+			//				"container_id":   container.id_container,
+			//				"curr_weight_kg": container.curr_weight,
+			//				"max_weight_kg":  container.max_weight}
+			//			_, _ = nestedjson.SetP(jsonMap, "container.country."+container.to_country)
+			//		}
+			//	}
+			//}
+			jsonMap1 := map[string]interface{}{
+				"container_id":   1,
+				"curr_weight_kg": 22,
+				"max_weight_kg":  25}
+			_, _ = nestedjson.SetP(jsonMap1, "container.country."+countries)
 
 			json.NewEncoder(w).Encode(nestedjson)
 		}
@@ -387,11 +431,11 @@ type P2 struct {
 
 // Prognose
 func ForecastHandler(w http.ResponseWriter, r *http.Request) {
-	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
-	if error != nil {
-		panic(error.Error())
-	}
-	defer dbConn.Close()
+	//dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
+	//if error != nil {
+	//	panic(error.Error())
+	//}
+	//defer dbConn.Close()
 
 	// Abrufen der Pfad Parameter
 	parameters := mux.Vars(r)
@@ -406,12 +450,12 @@ func ForecastHandler(w http.ResponseWriter, r *http.Request) {
 	// Fall Prognose P1-1
 	if Case == "p1-1" {
 		//Schickt die Query an die Datenbank
-		query := "select to_country, create_date, close_date from Container where status='0' and to_country='" + country + "' and create_date>='" + minDate[0] + "'"
-		results, error := dbConn.Query(query)
-		if error != nil {
-			panic(error.Error())
-		}
-		defer results.Close()
+		//query := "select to_country, create_date, close_date from Container where status='0' and to_country='" + country + "' and create_date>='" + minDate[0] + "'"
+		//results, error := dbConn.Query(query)
+		//if error != nil {
+		//	panic(error.Error())
+		//}
+		//defer results.Close()
 
 		//Gabs Package für erweitere json Strukturen
 		nestedjson := gabs.New()
@@ -420,47 +464,62 @@ func ForecastHandler(w http.ResponseWriter, r *http.Request) {
 		_, _ = nestedjson.Set(minDate[0], "container", "min_date")
 		_, _ = nestedjson.Set("now", "container", "max_date")
 
-		counter := 1
-		for results.Next() {
-			var container Container
-			error = results.Scan(&container.to_country, &container.create_date, &container.close_date)
-			if error != nil {
-				panic(error.Error())
-			}
+		//counter := 1
+		//for results.Next() {
+		//	var container Container
+		//	error = results.Scan(&container.to_country, &container.create_date, &container.close_date)
+		//	if error != nil {
+		//		panic(error.Error())
+		//	}
 
-			jsonMap := map[string]interface{}{
-				"open_date":  container.create_date,
-				"close_date": container.close_date}
-			_, _ = nestedjson.SetP(jsonMap, "container.dates."+strconv.Itoa(counter))
-			counter += 1
-		}
+		//jsonMap := map[string]interface{}{
+		//	"open_date":  container.create_date,
+		//	"close_date": container.close_date}
+		//_, _ = nestedjson.SetP(jsonMap, "container.dates."+strconv.Itoa(counter))
+		//counter += 1
+		//}
+		jsonMap1 := map[string]interface{}{
+			"open_date":  "2019-01-01",
+			"close_date": "2019-01-30"}
+		_, _ = nestedjson.SetP(jsonMap1, "container.dates."+"1")
+
+		jsonMap2 := map[string]interface{}{
+			"open_date":  "2019-02-04",
+			"close_date": "2019-03-02"}
+		_, _ = nestedjson.SetP(jsonMap2, "container.dates."+"2")
+
+		jsonMap3 := map[string]interface{}{
+			"open_date":  "2019-05-10",
+			"close_date": "2019-05-29"}
+		_, _ = nestedjson.SetP(jsonMap3, "container.dates."+"3")
 
 		json.NewEncoder(w).Encode(nestedjson)
 
 	} else if Case == "p1-2" {
 		//Schickt die Query an die Datenbank
-		query := "select to_country, create_date from Container where status='1' and to_country='" + country + "'"
-		fmt.Println(query)
-		results, error := dbConn.Query(query)
-		if error != nil {
-			panic(error.Error())
-		}
-		defer results.Close()
+		//query := "select to_country, create_date from Container where status='1' and to_country='" + country + "'"
+		//fmt.Println(query)
+		//results, error := dbConn.Query(query)
+		//if error != nil {
+		//	panic(error.Error())
+		//}
+		//defer results.Close()
 
 		//Gabs Package für erweitere json Strukturen
 		nestedjson := gabs.New()
 		_, _ = nestedjson.Set("OPEN", "container", "status")
 		_, _ = nestedjson.Set(country, "container", "country")
 
-		for results.Next() {
-			var container Container
-			error = results.Scan(&container.to_country, &container.create_date)
-			if error != nil {
-				panic(error.Error())
-			}
-
-			_, _ = nestedjson.Set(container.create_date, "container", "create_date")
-		}
+		//for results.Next() {
+		//	var container Container
+		//	error = results.Scan(&container.to_country, &container.create_date)
+		//	if error != nil {
+		//		panic(error.Error())
+		//	}
+		//
+		//	_, _ = nestedjson.Set(container.create_date, "container", "create_date")
+		//}
+		_, _ = nestedjson.Set("2021-02-20", "container", "create_date")
 
 		json.NewEncoder(w).Encode(nestedjson)
 
@@ -588,7 +647,7 @@ func ForecastHandler(w http.ResponseWriter, r *http.Request) {
 // Fragt alle Informationen des Table Customer ab
 func AllCustomers(w http.ResponseWriter, r *http.Request) {
 	// Baut Verbindung zu Datenbank auf
-	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
+	dbConn, error := sql.Open("mysql", databaseUser+":"+databasePassword+"@tcp("+databaseHost+":"+databasePort+")/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -625,7 +684,7 @@ func AllCustomers(w http.ResponseWriter, r *http.Request) {
 
 // Fragt alle Informationen des Table Container ab
 func AllContainers(w http.ResponseWriter, r *http.Request) {
-	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
+	dbConn, error := sql.Open("mysql", databaseUser+":"+databasePassword+"@tcp("+databaseHost+":"+databasePort+")/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -667,7 +726,7 @@ func AllContainers(w http.ResponseWriter, r *http.Request) {
 
 // Fragt alle Informationen des Table Bill ab
 func AllBills(w http.ResponseWriter, r *http.Request) {
-	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
+	dbConn, error := sql.Open("mysql", databaseUser+":"+databasePassword+"@tcp("+databaseHost+":"+databasePort+")/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
@@ -706,7 +765,7 @@ func AllBills(w http.ResponseWriter, r *http.Request) {
 // Fragt alle Informationen des Table Product ab
 func AllProducts(w http.ResponseWriter, r *http.Request) {
 
-	dbConn, error := sql.Open("mysql", databaseUser + ":" + databasePassword + "@tcp(" + databaseHost + ":" + databasePort + ")/logistics")
+	dbConn, error := sql.Open("mysql", databaseUser+":"+databasePassword+"@tcp("+databaseHost+":"+databasePort+")/logistics")
 	if error != nil {
 		panic(error.Error())
 	}
